@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>约瑟夫·德拉索恩斯 - 第五人格</title>
+    <style>
+        :root {
+            --primary-blue: #1a237e;
+            --secondary-blue: #283593;
+            --accent-blue: #3949ab;
+            --light-blue: #e8eaf6;
+            --text-color: #333;
+            --white: #fff;
+            --parchment-color: #f5e9c9;
+            --parchment-border: #d4b98a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-blue);
+            color: var(--text-color);
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M30,50 Q50,30 70,50 T90,50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>');
+            opacity: 0.1;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .section {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .section-title {
+            color: var(--primary-blue);
+            border-bottom: 2px solid var(--accent-blue);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .basic-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .info-group {
+            margin-bottom: 1rem;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: var(--secondary-blue);
+        }
+        
+        .costume-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .costume-card {
+            background-color: var(--light-blue);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .costume-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .costume-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+        }
+        
+        .costume-info {
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .costume-name {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .costume-rarity {
+            color: var(--primary-blue);
+            font-size: 0.9rem;
+        }
+        
+        .rank-display {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .rank-card {
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+.rank-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .rank-score {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .relationship-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .relationship-card {
+            background-color: var(--light-blue);
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .relationship-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+            border: 2px solid var(--accent-blue);
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--primary-blue);
+        }
+        
+        .relationship-info {
+            flex: 1;
+        }
+        
+        .relationship-name {
+            font-weight: bold;
+            color: var(--secondary-blue);
+        }
+        
+        .relationship-desc {
+            font-size: 0.9rem;
+        }
+        
+        .deduction-list {
+            list-style-type: none;
+        }
+        
+        .deduction-item {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .deduction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .deduction-title {
+            font-weight: bold;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .deduction-content {
+            margin-bottom: 0.5rem;
+            display: none;
+        }
+        
+        .deduction-content.show {
+            display: block;
+        }
+        
+        .deduction-req {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .deduction-conclusion {
+            background-color: #f5f5f5;
+            padding: 0.5rem;
+            border-left: 3px solid var(--accent-blue);
+            font-style: italic;
+        }
+        
+        .deduction-toggle {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .deduction-toggle:hover {
+            background-color: var(--secondary-blue);
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        .decoration {
+            position: fixed;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .decoration-1 {
+            top: 10%;
+            left: 5%;
+            width: 150px;
+            height: 150px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,10 L90,50 L50,90 L10,50 Z" fill="none" stroke="%231a237e"/></svg>');
+            background-size: contain;
+        }
+        
+        .decoration-2 {
+            bottom: 10%;
+            right: 5%;
+            width: 200px;
+            height: 200px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" stroke="%231a237e" stroke-width="2" fill="none"/></svg>');
+            background-size: contain;
+        }
+        
+        /* 羊皮纸样式 */
+        .parchment {
+            position: fixed;
+            width: 120px;
+            height: 160px;
+            background-color: var(--parchment-color);
+            border: 1px solid var(--parchment-border);
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.5s ease;
+            z-index: 100;
+            overflow: hidden;
+            transform-origin: center;
+        }
+        
+        .parchment:hover {
+            transform: scale(1.05);
+        }
+        
+        .parchment.open {
+            width: 500px;
+            height: 600px;
+            z-index: 1000;
+            transform: translate(-50%, -50%) scale(1);
+            left: 50%;
+            top: 50%;
+        }
+        
+        .parchment-content {
+            padding: 20px;
+            display: none;
+            height: 100%;
+            overflow-y: auto;
+        }
+        
+        .parchment.open .parchment-content {
+            display: block;
+        }
+        
+        .parchment-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #5d4037;
+            text-align: center;
+            border-bottom: 1px solid var(--parchment-border);
+            padding-bottom: 0.5rem;
+        }
+        
+        .parchment-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #4e342e;
+            text-align: justify;
+        }
+        
+        .parchment-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #5d4037;
+        }
+        
+        .parchment-fold {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #5d4037;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .parchment.open .parchment-fold {
+            display: none;
+        }
+/* 羊皮纸位置 */
+        .parchment-1 {
+            top: 15%;
+            left: 5%;
+            transform: rotate(-5deg);
+        }
+        
+        .parchment-2 {
+            top: 25%;
+            right: 3%;
+            transform: rotate(3deg);
+        }
+        
+        .parchment-3 {
+            bottom: 20%;
+            left: 8%;
+            transform: rotate(-2deg);
+        }
+        
+        .parchment-4 {
+            bottom: 15%;
+            right: 10%;
+            transform: rotate(5deg);
+        }
+        
+        .parchment-5 {
+            top: 60%;
+            left: 2%;
+            transform: rotate(-8deg);
+        }
+        
+        .parchment-6 {
+            top: 10%;
+            right: 15%;
+            transform: rotate(2deg);
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+        }
+        
+        @media (max-width: 768px) {
+            .basic-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .costume-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .rank-display {
+                flex-direction: column;
+            }
+            
+            .parchment {
+                width: 100px;
+                height: 140px;
+            }
+            
+            .parchment.open {
+                width: 90%;
+                height: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 羊皮纸 -->
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="parchment parchment-1">
+        <div class="parchment-fold">无法寄出的家书</div>
+        <div class="parchment-content">
+            <button class="parchment-close">×</button>
+            <div class="parchment-title">无法寄出的家书</div>
+            <div class="parchment-text">
+                <p>亲爱的克劳德：</p>
+                <p>  今天没有下雨，却仍然保留着你离去那天的寒意。</p>
+                <p>  我坐在书房里，隔着遥远的时光，写一封永远不可能寄出去的信。看起来有点蠢，但在今天，我无法控制自己。</p>
+                <p>  你和我，曾经共同走过四季的路，一年又一年，直到那个冬天。我们所走的路开始偏斜，你仍然满怀希望等待着春天，可怕的死神却站在前方。</p>
+                <p>  他带着你离去了，带着许多人离去了，去我无法到达也无法看清的世界。</p>
+                <p>  我甚至有些责怪自己，为什么，在这个寒意料峭的初春，是我活了下来。</p>
+                <p>  我想念你，亲爱的兄弟。可当我站在镜子前面，日复一日镜中的面孔却逐渐变得陌生。即使时光也不能夺走的记忆，该如何获得呢？我可以永远记得你吗？我可以永远记得那些可爱可敬的人们吗？</p>
+                <p>  你再也不会回应我了，意识到这一点时总让我心碎。</p>
+                <p>  你说春天始终会再来，正如乌云无法永远遮蔽太阳的光辉。</p>
+                <p>  只是从那天起，我再也无法享受那些没有你的春天了。</p>
+                <p>  我必须记住什么，总有人应该记住什么。</p>
+                <p>  那些灾难，那些疾病，那些逝去的生命，那些本应一同迎接春天到来的人们…</p>
+                <p>  我想全部记住。</p>
+                <p style="text-align: right; margin-top: 2rem;">你的兄长<br>约瑟夫</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="parchment parchment-2">
+        <div class="parchment-fold">最后一封信</div>
+        <div class="parchment-content">
+            <button class="parchment-close">×</button>
+            <div class="parchment-title">最后一封信</div>
+            <div class="parchment-text">
+                <p>吾友艾略特：</p>
+                <p>  我心意已决，你不必一而再再而三地劝我。</p>
+                <p>  她一定还活着，就存在于这个庄园的某个角落。我会找到她，带上她一起出来。</p>
+                <p>  何况我已取得老管家的信任，不可能在这种阶段抽身而退。</p>
+                <p>  不过，确实如你最初猜测的那样，这里绝不会只是一个普通的庄园，至于那位沟壑纵横、步履蹒跚的乡绅老爷，谦和可亲的笑脸也许只是他虚假的对外面具。</p>
+                <p>  老人每天会花一个小时待在画室里，对着那几张破损的涂鸦纸静默不语。我偷偷检查过，这些涂鸦画除了都出自一人之手外，并无异常。此人名叫克劳德，可每当我旁敲侧击问及时，庄园内的人都讳莫如深。</p>
+                <p>  除此之外的大部分时间，老人都待在地下暗室。你知道的，就是他处理相片的地方。可是，即便他再热爱摄影，这时长是否也太不寻常了些？</p>
+                <p>  我又打听到，老乡绅以前并没有那么疯狂。一切的转折点，源自一次远游，没人知道他远游时遇到了什么，只知道他回家时拿了许多神秘学的书籍。自那之后，老人就整日整夜把自己关在暗室里，还不允许下人入内。好像也是从那个时候起，镇子上出现了老人小孩离奇失踪的怪事。</p>
+                <p>  要说那个地方没有问题，傻瓜都不信！</p>
+                <p>  然而，庄园内居然没有任何人提出疑问或者讨论这件事？</p>
+                <p>  不知是对未知的恐惧压过了本能的好奇，还是当真主人的命令高于一切？</p>
+                <p>  总之，明晚，我会潜进地下暗室。我不知道前方等着我的是什么，但我已决心推开那扇门……</p>
+                <p style="text-align: right; margin-top: 2rem;">祝安<br>麦考利</p>
+            </div>
+        </div>
+    </div>
+<div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    
+    <header>
+        <div class="header-content">
+            <h1>约瑟夫·德拉索恩斯</h1>
+            <p class="subtitle">摄影师 - 第五人格</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- 基本信息部分 -->
+        <section class="section">
+            <h2 class="section-title">基本信息</h2>
+            <div class="basic-info">
+                <div>
+                    <div class="info-group">
+                        <span class="info-label">纪念日：</span>
+                        <span>3月11日</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="info-label">擅长：</span>
+                        <span>绘画、舞蹈、击剑</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="info-label">喜欢：</span>
+                        <span>秋季、银质品</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="info-group">
+                        <span class="info-label">兴趣：</span>
+                        <span>摄影</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="info-label">厌恶：</span>
+                        <span>潮湿的东西、春天</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="info-label">特质：</span>
+                        <span>偏执、怀旧、傲慢、优雅</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="info-group">
+                        <span class="info-label">菜品：</span>
+                        <span>Colada Morada</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="info-label">角色背景：</span>
+                        <span>约瑟夫·德拉索恩斯先生曾是当地受人尊敬的乡绅，富有，举止优雅并拥有迷人的异国口音。人们乐意为这位老绅士的爱好充当模特，但随着约瑟夫的摄影作品增加，村庄中的人越来越少。看起来这位摄影师通过快门收集了一些容貌之外的东西。</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 时装展示部分 -->
+        <section class="section">
+            <h2 class="section-title">时装展示</h2>
+            
+            <h3>稀世时装</h3>
+            <div class="costume-gallery">
+                <div class="costume-card">
+                    <div class="costume-image">亚兹拉尔</div>
+                    <div class="costume-info">
+                        <div class="costume-name">亚兹拉尔</div>
+                        <div class="costume-rarity">稀世时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">总裁判长</div>
+                    <div class="costume-info">
+                        <div class="costume-name">总裁判长</div>
+                        <div class="costume-rarity">稀世时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image"><a href="https://wiki.biligame.com/dwrg/%E9%A6%96%E9%A1%B5"><img src = "wanglinggongzhu.png"></a></div>
+                    <div class="costume-info">
+                        <div class="costume-name">亡灵之主</div>
+                        <div class="costume-rarity">稀世时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">盛夏光影</div>
+                    <div class="costume-info">
+                        <div class="costume-name">盛夏光影</div>
+                        <div class="costume-rarity">稀世时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">恒光</div>
+                    <div class="costume-info">
+                        <div class="costume-name">"恒光"</div>
+                        <div class="costume-rarity">稀世时装</div>
+                    </div>
+                </div>
+            </div>
+<h3 style="margin-top: 2rem;">奇珍时装</h3>
+            <div class="costume-gallery">
+                <div class="costume-card">
+                    <div class="costume-image">月下绅士</div>
+                    <div class="costume-info">
+                        <div class="costume-name">月下绅士</div>
+                        <div class="costume-rarity">奇珍时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">阿波罗</div>
+                    <div class="costume-info">
+                        <div class="costume-name">阿波罗</div>
+                        <div class="costume-rarity">奇珍时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">暮剑</div>
+                    <div class="costume-info">
+                        <div class="costume-name">暮剑</div>
+                        <div class="costume-rarity">奇珍时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">En ligne</div>
+                    <div class="costume-info">
+                        <div class="costume-name">En ligne</div>
+                        <div class="costume-rarity">奇珍时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">D.M.</div>
+                    <div class="costume-info">
+                        <div class="costume-name">"D.M."</div>
+                        <div class="costume-rarity">奇珍时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">皮塔拉托里</div>
+                    <div class="costume-info">
+                        <div class="costume-name">皮塔拉托里</div>
+                        <div class="costume-rarity">奇珍时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">浮士德</div>
+                    <div class="costume-info">
+                        <div class="costume-name">浮士德</div>
+                        <div class="costume-rarity">奇珍时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">宿醉</div>
+                    <div class="costume-info">
+                        <div class="costume-name">宿醉</div>
+                        <div class="costume-rarity">奇珍时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">安宁</div>
+                    <div class="costume-info">
+                        <div class="costume-name">安宁</div>
+                        <div class="costume-rarity">奇珍时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">梦境大耳狗</div>
+                    <div class="costume-info">
+                        <div class="costume-name">梦境大耳狗</div>
+                        <div class="costume-rarity">奇珍时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">琥珀</div>
+                    <div class="costume-info">
+                        <div class="costume-name">"琥珀"</div>
+                        <div class="costume-rarity">奇珍时装</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">独特时装</h3>
+            <div class="costume-gallery">
+                <div class="costume-card">
+                    <div class="costume-image">初始时装</div>
+                    <div class="costume-info">
+                        <div class="costume-name">初始时装</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">旧装</div>
+                    <div class="costume-info">
+                        <div class="costume-name">旧装</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">绯影</div>
+                    <div class="costume-info">
+                        <div class="costume-name">绯影</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">麦克白</div>
+                    <div class="costume-info">
+                        <div class="costume-name">麦克白</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">落霞</div>
+                    <div class="costume-info">
+                        <div class="costume-name">落霞</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">谎言</div>
+                    <div class="costume-info">
+                        <div class="costume-name">"谎言"</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">催眠医师</div>
+                    <div class="costume-info">
+                        <div class="costume-name">催眠医师</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">伯爵</div>
+                    <div class="costume-info">
+                        <div class="costume-name">伯爵</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">拍卖师</div>
+                    <div class="costume-info">
+                        <div class="costume-name">拍卖师</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">鸢尾</div>
+                    <div class="costume-info">
+                        <div class="costume-name">鸢尾</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">潭影</div>
+                    <div class="costume-info">
+                        <div class="costume-name">潭影</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">特使</div>
+                    <div class="costume-info">
+                        <div class="costume-name">特使</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">委托人</div>
+                    <div class="costume-info">
+                        <div class="costume-name">委托人</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">慢滑种子</div>
+                    <div class="costume-info">
+                        <div class="costume-name">慢滑种子</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">圣诞装</div>
+                    <div class="costume-info">
+                        <div class="costume-name">圣诞装</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">谜</div>
+                    <div class="costume-info">
+                        <div class="costume-name">"谜"</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">友善的狼</div>
+                    <div class="costume-info">
+                        <div class="costume-name">"友善"的狼</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">暴君</div>
+                    <div class="costume-info">
+                        <div class="costume-name">"暴君"</div>
+                        <div class="costume-rarity">独特时装</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+<section class="section">
+            <h2 class="section-title">随身物品</h2>
+            
+            <h3>稀世随身物品</h3>
+            <div class="costume-gallery">
+                <div class="costume-card">
+                    <div class="costume-image">致命的邀请函</div>
+                    <div class="costume-info">
+                        <div class="costume-name">致命的邀请函</div>
+                        <div class="costume-rarity">稀世随身物品</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">仁慈</div>
+                    <div class="costume-info">
+                        <div class="costume-name">"仁慈"</div>
+                        <div class="costume-rarity">稀世随身物品</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">奇珍随身物品</h3>
+            <div class="costume-gallery">
+                <div class="costume-card">
+                    <div class="costume-image">星见</div>
+                    <div class="costume-info">
+                        <div class="costume-name">星见</div>
+                        <div class="costume-rarity">奇珍随身物品</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">笔尖柔情</div>
+                    <div class="costume-info">
+                        <div class="costume-name">笔尖柔情</div>
+                        <div class="costume-rarity">奇珍随身物品</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">海风轻语</div>
+                    <div class="costume-info">
+                        <div class="costume-name">海风轻语</div>
+                        <div class="costume-rarity">奇珍随身物品</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">独特随身物品</h3>
+            <div class="costume-gallery">
+                <div class="costume-card">
+                    <div class="costume-image">雪人</div>
+                    <div class="costume-info">
+                        <div class="costume-name">雪人</div>
+                        <div class="costume-rarity">独特随身物品</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">丝质手套</div>
+                    <div class="costume-info">
+                        <div class="costume-name">丝质手套</div>
+                        <div class="costume-rarity">独特随身物品</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">干板暗盒</div>
+                    <div class="costume-info">
+                        <div class="costume-name">干板暗盒</div>
+                        <div class="costume-rarity">独特随身物品</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">专属动作</h2>
+            <div class="costume-gallery">
+                <div class="costume-card">
+                    <div class="costume-image">伤脑筋</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-伤脑筋</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">喝汤</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-喝汤</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">威胁</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-威胁</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">封存</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-封存</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">思考</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-思考</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">掷4面骰</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-掷4面骰</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">欢迎光临</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-欢迎光临</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">给糖</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-给糖</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">行礼</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-行礼</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">涂鸦</h2>
+            <div class="costume-gallery">
+                <div class="costume-card">
+                    <div class="costume-image">个性</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-个性</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">剪影</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-剪影</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">卡通</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-卡通</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">彩底</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-彩底</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">暴君</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-"暴君"</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">委托信</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-委托信</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">拍卖师</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-拍卖师</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">演绎之星</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-演绎之星</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">灰化</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-灰化</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">灰影</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-灰影</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">皮塔拉托里</div>
+                    <div class="costume-info">
+                        <div class="costume-name">皮塔拉托里</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">萌版</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-萌版</div>
+                    </div>
+                </div>
+                <div class="costume-card">
+                    <div class="costume-image">角色日</div>
+                    <div class="costume-info">
+                        <div class="costume-name">摄影师-角色日</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+<section class="section">
+            <h2 class="section-title">关系网</h2>
+            <div class="relationship-grid">
+                <div class="relationship-card">
+                    <div class="relationship-icon">克劳德</div>
+                    <div class="relationship-info">
+                        <div class="relationship-name">克劳德·德拉索恩斯</div>
+                        <div class="relationship-desc">约瑟夫的孪生兄弟，已故</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">推演任务</h2>
+            <button class="deduction-toggle" onclick="toggleDeductions()">显示/隐藏推演内容</button>
+            <ul class="deduction-list">
+                <li class="deduction-item">
+                    <div>
+                        <div class="deduction-title">推演1：逆流</div>
+                        <div class="deduction-content">
+                            <div class="deduction-desc">试图回到过去总是困难重重</div>
+                            <div class="deduction-req">目标：翻越2/3/4次窗户</div>
+                            <div class="deduction-conclusion">结论：破损的剪报：来自国王…从主权者和他的臣民之间相互信任与互惠之爱出发，应尽快为国家的弊病提供有效的补救方法…确保公众的幸福。使我们重新感受到长期被剥削的平静与安宁。全国等级会议将于…宫举行。</div>
+                        </div>
+                    </div>
+                </li>
+                <li class="deduction-item">
+                    <div>
+                        <div class="deduction-title">推演2：变革</div>
+                        <div class="deduction-content">
+                            <div class="deduction-desc">他们嚎叫着，手里的火把照亮了天空。</div>
+                            <div class="deduction-req">目标：蓄力攻击击中求生者1/1/2次</div>
+                            <div class="deduction-conclusion">结论：日记1：我们都很喜欢冬天的壁炉，火焰明亮又温暖。可当它在街道上肆虐时，我们才意识到，那些生活中常见的东西，能够变成另一种面貌。</div>
+                        </div>
+                    </div>
+                </li>
+                <li class="deduction-item">
+                    <div>
+                        <div class="deduction-title">推演3：回忆</div>
+                        <div class="deduction-content">
+                            <div class="deduction-desc">最令人惶恐的，是忘却和损毁。</div>
+                            <div class="deduction-req">目标：踩碎1/2/3块木板</div>
+                            <div class="deduction-conclusion">结论：破损的肖像画：一对双胞胎兄弟站在年轻夫妻中间，面带微笑。</div>
+                        </div>
+                    </div>
+                </li>
+                <li class="deduction-item">
+                    <div>
+                        <div class="deduction-title">推演4：流亡</div>
+                        <div class="deduction-content">
+                            <div class="deduction-desc">我们因人民的意志来到这里，我们只会被刺刀驱逐而离去。</div>
+                            <div class="deduction-req">目标：开启摄像机1/2/3次</div>
+                            <div class="deduction-conclusion">结论：日记2：克劳德咳嗽得越来越厉害，他几乎睡不着觉。父亲说，再等一个月，只要一个月，我们就到了。</div>
+                        </div>
+                    </div>
+                </li>
+<li class="deduction-item">
+                    <div>
+                        <div class="deduction-title">推演5：失去</div>
+                        <div class="deduction-content">
+                            <div class="deduction-desc">我想要他回来。</div>
+                            <div class="deduction-req">目标：在相中世界内击倒求生者1/2/3次</div>
+                            <div class="deduction-conclusion">结论：日记3：克劳德死了。我无法接受这个事实。如果时间能够倒流，如果我能留住那一刻...</div>
+                        </div>
+                    </div>
+                </li>
+                <li class="deduction-item">
+                    <div>
+                        <div class="deduction-title">推演6：永恒</div>
+                        <div class="deduction-content">
+                            <div class="deduction-desc">美丽的事物应该永远存在。</div>
+                            <div class="deduction-req">目标：使用相中世界命中求生者2/3/4次</div>
+                            <div class="deduction-conclusion">结论：日记4：我找到了方法。通过相机，我可以将美好的瞬间永远保存。这样，克劳德就不会真正离开我了。</div>
+                        </div>
+                    </div>
+                </li>
+                <li class="deduction-item">
+                    <div>
+                        <div class="deduction-title">推演7：镜中</div>
+                        <div class="deduction-content">
+                            <div class="deduction-desc">现实与虚幻的界限在哪里？</div>
+                            <div class="deduction-req">目标：在一场游戏中拍照命中所有求生者</div>
+                            <div class="deduction-conclusion">结论：日记5：镜中的世界越来越真实，现实反而变得模糊。也许，这才是我应该存在的世界。</div>
+                        </div>
+                    </div>
+                </li>
+                <li class="deduction-item">
+                    <div>
+                        <div class="deduction-title">推演8：贵族</div>
+                        <div class="deduction-content">
+                            <div class="deduction-desc">高贵的血统意味着责任。</div>
+                            <div class="deduction-req">目标：完成3场四杀游戏</div>
+                            <div class="deduction-conclusion">结论：日记6：我明白了。贵族不应该逃避现实，而是要掌控它。就像我掌控相机中的世界一样。</div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </div>
+    
+    <div class="parchment parchment-4">
+        <div class="parchment-fold">一张泛黄的照片</div>
+        <div class="parchment-content">
+            <button class="parchment-close">×</button>
+            <div class="parchment-title">一张泛黄的照片</div>
+            <div class="parchment-text">
+                <p style="text-align: center; font-style: italic; margin-bottom: 2rem;">（照片正面依稀可见一个年轻人，背面记录了下面的文字：）</p>
+                <p>吾弟克劳德：</p>
+                <p>  色彩杂糅的太阳光愈发刺眼，吞噬着我的视力，也模糊了你的容貌。唯有在暗室之中，紧紧拥抱着你，才能让心沉静下来。</p>
+                <p>  我贪婪地吸食着周遭的水银蒸气，它们让我沉浸在"永恒国"中，享受着现实唯一的美好，藉由它们，有时甚至可以短暂地，看到你。</p>
+                <p>  周围的人渐次消失，直到只剩一人，而他的生命，也显而易见地所剩无几。实验不得不中断——或许从一开始，它便是不可逆的……</p>
+                <p>  双向的反馈需要一些催化剂，正如影像的显现需要感光物质的曝光与冲洗。</p>
+                <p>  或许是命运的嘲弄，指责我在你疾病缠身之时无能为力——在风烛残年之际，难能可贵的机会才姗姗来迟。</p>
+                <p>  虽迟但到……只需完成这场神圣的仪式，便可让定格的你重新绽放笑颜。</p>
+                <p>  暗箱和你的相片是为数不多需要携带的物品，至于其他的音容、光影与回忆，以及数十年来的发明，便留在这府邸中，用来守护"永恒国"免受侵袭。</p>
+                <p>  或许，我该打扮成一位年轻的绅士，以你的模样出现——阻碍者，都会被封存。</p>
+            </div>
+        </div>
+    </div>
+<div class="parchment parchment-5">
+        <div class="parchment-fold">一则留言</div>
+        <div class="parchment-content">
+            <button class="parchment-close">×</button>
+            <div class="parchment-title">一则留言</div>
+            <div class="parchment-text">
+                <p style="text-align: center; font-style: italic; margin-bottom: 2rem;">"那座冰冷、死寂，却永远芬芳的玫瑰园，还在不断索求罪恶的"养料"——他从未放弃从衰败中培育新生，从贫乏中培育鲜活。最终"永恒"许诺他更多时间与痛楚，也使他知晓，事物只可挽留，却无法挽回。"</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="parchment parchment-6">
+        <div class="parchment-fold">调查随笔</div>
+        <div class="parchment-content">
+            <button class="parchment-close">×</button>
+            <div class="parchment-title">约瑟夫·德拉索恩斯的调查随笔（一）</div>
+            <div class="parchment-text">
+                <p>密室的角落里还摆放着几架光学装置，因为此地所有档案的存放都合乎逻辑，所以我顺理成章地认为装置下方的小型储物柜里是相关实验参与者的档案，但没想到柜里是数张未经冲洗的硬质底片。第一摞相片顶部用纸条备注着一行小字：约瑟夫·德拉索恩斯。</p>
+                <p>  这个名字不在失踪者之列，但我似曾相识，回屋后，我幸运地在手提箱中找到了相关记录，德拉索恩斯在一名失踪者的背景调查中出现过，同时也与我的自由记者朋友相关的一宗谜案有关：</p>
+                <p>  一切开始于朋友伯父的好友麦考利的失踪，麦考利曾于庄园中为一位法国老乡绅工作，然而某天夜里那所庄园的所有人竟尽数失踪，一切线索表明这件事与老乡绅脱不了干系，但地方警局不仅找不到乡绅先生本人，甚至搜集不到任何足以定罪的证据。经年日久，警方因证据链断裂而终止调查，并将案件归入"未决卷宗"，只有朋友的伯父坚持追查，势要挖出罪证将案件重启，这几乎成了他的执念。但晨曦终将犒赏执灯者，历经数十载，朋友的伯父终于在村中跑腿人弥留之际等到了被他吞没的线索：原来多年前麦考利察觉到即将来临的危险，提前将老乡绅研发的一个光学装置连同求救信寄了出去，但没想到包裹被受托运输的跑腿人私吞了，卖给了城里来的勒鲁先生。为了区区7先令，朋友的伯父错过了麦考利的求救信，更失去了可能指证德拉索恩斯的关键物证。</p>
+                <p>  而我的朋友或许是承了其伯父的遗志，又或许只是对那个沾染神秘色彩的光学装置感兴趣，他在工作之余不忘追查装置下落。我原以为朋友此举如同雾海寻针，但没想到命运纺锤的经纬线总在人类目力不及处编织图案，朋友因公前往荷兰出差，他本是为了赫特监狱越狱案的报道而四处走访，却意外在当地发现了那名勒鲁先生的下落。</p>
+                <p style="font-style: italic; margin-top: 1rem;">（这段文字后粘贴了一页被精心保管的信纸，纸张略显陈旧，笔迹也与此前截然不同。）</p>
+                <p>  ……访查的第六天，我提前完成了工作任务，决定奖励自己异乡偷闲，恰好听闻附近正在举办光学展览，那是一种使用名为幻灯机的机械装置放映图像的新奇表演。没错，光学装置，你知道的，我从不会错过这种展览。</p>
+                <p>  展览结束后，我试图采访负责放映的工作人员，但那名老人却早早离开了。</p>
+                <p>  "勒鲁先生性情孤僻，更别提接受采访了。"</p>
+                <p>  那一瞬间，我怀疑自己的耳朵出了差错："勒鲁？这不像一个荷兰姓氏。"</p>
+                <p>  熟识者道当然，勒鲁先生是法国人，听说在那边惹了麻烦才来到荷兰专心研究他的"光学魔术"。</p>
+                <p>  我甚至记不清那席对话后我是如何回到旅馆的，心里反反复复只有一个词："我找到他了"。</p>
+                <p>  "偶然来村的城里人"？不，绝不会有如此巧合——能在案发前夕精准买走德拉索恩斯的装置，并在事发后抹消自己的所有踪迹前往荷兰，勒鲁一定认识德拉索恩斯，甚至知道那天夜里发生了什么。</p>
+                <p>  明天我便前往这位幻灯师的下榻之处一探究竟。</p>
+            </div>
+        </div>
+    </div>
+<footer class="footer">
+        <p>© 2023 第五人格约瑟夫专题网站 - 非官方粉丝网站</p>
+    </footer>
+    
+    <script>
+        // 推演内容显示/隐藏切换 - 修复版本
+        function toggleDeductions() {
+            const contents = document.querySelectorAll('.deduction-content');
+            const toggleButton = document.querySelector('.deduction-toggle');
+            
+            contents.forEach(content => {
+                content.classList.toggle('show');
+            });
+            
+            // 更新按钮文本
+            if (contents[0].classList.contains('show')) {
+                toggleButton.textContent = '隐藏推演内容';
+            } else {
+                toggleButton.textContent = '显示推演内容';
+            }
+        }
+        
+        // 羊皮纸功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 默认显示推演内容
+            const contents = document.querySelectorAll('.deduction-content');
+            contents.forEach(content => {
+                content.classList.add('show');
+            });
+            
+            // 设置按钮文本
+            document.querySelector('.deduction-toggle').textContent = '隐藏推演内容';
+            
+            const parchments = document.querySelectorAll('.parchment');
+            const overlay = document.getElementById('overlay');
+            let currentOpenParchment = null;
+            
+            // 点击羊皮纸展开
+            parchments.forEach(parchment => {
+                parchment.addEventListener('click', function(e) {
+                    // 如果点击的是关闭按钮，不处理
+                    if (e.target.classList.contains('parchment-close')) return;
+                    
+                    if (currentOpenParchment && currentOpenParchment !== parchment) {
+                        currentOpenParchment.classList.remove('open');
+                    }
+                    
+                    parchment.classList.toggle('open');
+                    overlay.style.display = parchment.classList.contains('open') ? 'block' : 'none';
+                    currentOpenParchment = parchment.classList.contains('open') ? parchment : null;
+                });
+            });
+            
+            // 点击关闭按钮
+            document.querySelectorAll('.parchment-close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const parchment = this.closest('.parchment');
+                    parchment.classList.remove('open');
+                    overlay.style.display = 'none';
+                    currentOpenParchment = null;
+                });
+            });
+            
+            // 点击遮罩层关闭羊皮纸
+            overlay.addEventListener('click', function() {
+                if (currentOpenParchment) {
+                    currentOpenParchment.classList.remove('open');
+                    this.style.display = 'none';
+                    currentOpenParchment = null;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
